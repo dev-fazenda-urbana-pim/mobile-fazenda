@@ -1,6 +1,7 @@
+import { Colors } from '@/constants/Colors';
 import { MaterialIcons } from '@expo/vector-icons';
 import React from 'react';
-import { Alert, Modal, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
 
 interface ModalProfileProps {
   modalVisible: boolean;
@@ -10,23 +11,21 @@ interface ModalProfileProps {
 export default function ModalProfile({ modalVisible, setModalVisible }: ModalProfileProps) {
   return (
     <Modal
-      animationType="slide"
-      transparent={true}
+      animationType="fade"
+      statusBarTranslucent
+      transparent
       visible={modalVisible}
       onRequestClose={() => {
-        Alert.alert('Modal has been closed.');
         setModalVisible(!modalVisible);
       }}>
-      <View style={styles.centeredView}>
+      <View style={styles.modalOverlay}>
         <View style={styles.modalView}>
           <Pressable style={styles.closeButton} onPress={() => setModalVisible(false)}>
             <MaterialIcons name="close" size={24} color="black" />
           </Pressable>
 
-          <Pressable style={[styles.button, styles.buttonActions, styles.buttonConfig]}>
-            <Text style={styles.textStyle}>Configurar Conta</Text>
-            <MaterialIcons name="settings" size={24} color="white" />
-          </Pressable>
+          <Text style={{ fontSize: 20 }}>Matheus Aurelio</Text>
+          <Text style={{ fontSize: 16 }}>Matheus.A@urbanino.com</Text>
 
           <Pressable
             style={[styles.button, styles.buttonActions, styles.buttonLogout]}
@@ -41,15 +40,16 @@ export default function ModalProfile({ modalVisible, setModalVisible }: ModalPro
 }
 
 const styles = StyleSheet.create({
-  centeredView: {
+  modalOverlay: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalView: {
     margin: 20,
     backgroundColor: 'white',
-    borderRadius: 20,
+    borderRadius: 8,
     padding: 35,
     alignItems: 'center',
     shadowColor: '#000',
@@ -65,10 +65,9 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
   },
   button: {
-    borderRadius: 20,
+    borderRadius: 8,
     padding: 10,
-    elevation: 2,
-    marginTop: 10,
+    marginTop: 24,
     width: '100%',
     alignItems: 'center',
   },
@@ -77,11 +76,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 4,
   },
-  buttonConfig: {
-    backgroundColor: '#2196F3',
-  },
   buttonLogout: {
-    backgroundColor: '#FF0000',
+    alignSelf: 'flex-end',
+    backgroundColor: Colors.blue['indigo-dye'],
   },
   textStyle: {
     color: 'white',
