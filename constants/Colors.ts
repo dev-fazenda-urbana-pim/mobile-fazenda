@@ -7,6 +7,16 @@ const tintColorLight = '#0a7ea4';
 const tintColorDark = '#fff';
 
 export const Colors = {
+  blue: {
+    "prussian": '#024059',
+    "indigo-dye": '#284B63',
+  },
+  green: {
+    "pistachio": '#04BF8A',
+    "dark": '#03A64A',
+    "limon": '#025940',
+  },
+  danger: "#DC143C",
   light: {
     text: '#11181C',
     background: '#fff',

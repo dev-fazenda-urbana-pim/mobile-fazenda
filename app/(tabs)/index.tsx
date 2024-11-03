@@ -1,57 +1,81 @@
-import { Image, Platform, StyleSheet } from 'react-native';
+import { Colors } from '@/constants/Colors';
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Controller, useForm } from 'react-hook-form';
+import { Image, Pressable, StyleSheet, Text, TextInput } from 'react-native';
 
-import Header from '@/components/Header';
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+import { FormDataLogin, schemaLogin } from '@/validations/schemaLogin';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+const urbaninoLogo = require('@/assets/images/urbanino-logo.png');
+
 export default function HomeScreen() {
+  const { control, handleSubmit, formState: { errors } } = useForm<FormDataLogin>({
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+    resolver: zodResolver(schemaLogin),
+  });
+
+  const onSubmit = handleSubmit(data => console.log(data));
+
   return (
     <SafeAreaView style={styles.container}>
-      <Header />
+      <Image source={urbaninoLogo} style={{ marginHorizontal: "auto" }} />
 
-      <ParallaxScrollView
-        headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-        headerImage={
-          <Image
-            source={require('@/assets/images/partial-react-logo.png')}
-            style={styles.reactLogo}
+      <Text style={{ fontSize: 20, textAlign: "center", marginBottom: 48 }}>
+        Entre em sua conta
+      </Text>
+
+      <Controller
+        control={control}
+        rules={{
+          required: true,
+        }}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <TextInput
+            style={styles.input}
+            placeholder="Email"
+            placeholderTextColor="#888"
+            value={value}
+            onBlur={onBlur}
+            onChangeText={onChange}
+            keyboardType="email-address"
+            autoCapitalize="none"
           />
-        }>
-        <ThemedView style={styles.titleContainer}>
-          <ThemedText type="title">Welcome!</ThemedText>
-          <HelloWave />
-        </ThemedView>
-        <ThemedView style={styles.stepContainer}>
-          <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-          <ThemedText>
-            Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-            Press{' '}
-            <ThemedText type="defaultSemiBold">
-              {Platform.select({ ios: 'cmd + d', android: 'cmd + m' })}
-            </ThemedText>{' '}
-            to open developer tools.
-          </ThemedText>
-        </ThemedView>
-        <ThemedView style={styles.stepContainer}>
-          <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-          <ThemedText>
-            Tap the Explore tab to learn more about what's included in this starter app.
-          </ThemedText>
-        </ThemedView>
-        <ThemedView style={styles.stepContainer}>
-          <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-          <ThemedText>
-            When you're ready, run{' '}
-            <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-            <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-            <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-            <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-          </ThemedText>
-        </ThemedView>
-      </ParallaxScrollView>
+        )}
+        name="email"
+      />
+      {errors.email && <Text style={{ color: Colors.danger }}>{errors.email.message}</Text>}
+
+      <Controller
+        control={control}
+        rules={{
+          required: true,
+        }}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <TextInput
+            style={styles.input}
+            placeholder="Senha"
+            placeholderTextColor="#888"
+            value={value}
+            onBlur={onBlur}
+            onChangeText={onChange}
+            secureTextEntry
+          />
+        )}
+        name="password"
+      />
+      {errors.password && <Text style={{ color: Colors.danger }}>{errors.password.message}</Text>}
+
+      <Pressable style={styles.button} onPress={handleSubmit(onSubmit)}>
+        <Text style={styles.buttonText}>Entrar</Text>
+      </Pressable>
+
+      <Text style={{ color: Colors.blue['indigo-dye'], marginTop: 24 }}>
+        Em caso de perda de acesso, entre em contato com
+        seu gerente ou supervisor.
+      </Text>
     </SafeAreaView>
   );
 }
@@ -59,6 +83,29 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    padding: 20,
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    elevation: 5,
+  },
+  input: {
+    height: 40,
+    borderColor: '#ccc',
+    borderWidth: 1,
+    borderRadius: 5,
+    marginBottom: 24,
+    paddingHorizontal: 10,
+  },
+  button: {
+    backgroundColor: Colors.blue['indigo-dye'],
+    padding: 10,
+    borderRadius: 10,
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  buttonText: {
+    color: '#fff',
+    fontWeight: 'bold',
   },
   titleContainer: {
     padding: 20,
