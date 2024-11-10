@@ -5,20 +5,20 @@ import { Image, Pressable, StyleSheet, Text, TextInput, View } from 'react-nativ
 
 import { FormMessage } from '@/components/FormMessage';
 import { ThemedText } from '@/components/ThemedText';
-import { FormDataLogin, schemaLogin } from '@/validations/schemaLogin';
+import { FormDataRegister, schemaRegister } from '@/validations/schemaRegister';
 import { Link } from 'expo-router';
-import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const urbaninoLogo = require('@/assets/images/urbanino-logo.png');
 
 export default function HomeScreen() {
-  const { control, handleSubmit, formState: { errors } } = useForm<FormDataLogin>({
+  const { control, handleSubmit, formState: { errors } } = useForm<FormDataRegister>({
     defaultValues: {
+      name: '',
       email: '',
       password: '',
     },
-    resolver: zodResolver(schemaLogin),
+    resolver: zodResolver(schemaRegister),
   });
 
   const onSubmit = handleSubmit(data => console.log(data));
@@ -28,15 +28,35 @@ export default function HomeScreen() {
       <Image source={urbaninoLogo} style={{ marginHorizontal: "auto" }} />
 
       <Text style={{ fontSize: 20, textAlign: "center", marginBottom: 16 }}>
-        Entre em sua conta
+        Crie sua conta
       </Text>
 
       <Text style={{ textAlign: 'center', marginBottom: 24 }}>
-        Não tem uma conta? {""}
-        <Link href="/register" style={{ fontWeight: "bold", color: Colors.blue['indigo-dye'] }}>
-          <ThemedText type='link'>Cadastre-se aqui</ThemedText>
+        Já possui uma conta? {""}
+        <Link href="/" style={{ fontWeight: "bold", color: Colors.blue['indigo-dye'] }}>
+          <ThemedText type='link'>Faça login aqui</ThemedText>
         </Link>
       </Text>
+
+      <Controller
+        control={control}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <View>
+            <TextInput
+              style={styles.input}
+              placeholder="Nome"
+              placeholderTextColor="#888"
+              value={value}
+              onBlur={onBlur}
+              onChangeText={onChange}
+              keyboardType="email-address"
+              autoCapitalize="none"
+            />
+            <FormMessage error={errors.email?.message} />
+          </View>
+        )}
+        name="email"
+      />
 
       <Controller
         control={control}
@@ -78,7 +98,7 @@ export default function HomeScreen() {
       />
 
       <Pressable style={styles.button} onPress={handleSubmit(onSubmit)}>
-        <Text style={styles.buttonText}>Entrar</Text>
+        <Text style={styles.buttonText}>Cadastrar</Text>
       </Pressable>
 
       <Text style={{ color: Colors.blue['indigo-dye'], marginTop: 24 }}>
