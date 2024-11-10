@@ -49,13 +49,13 @@ export default function HomeScreen() {
               value={value}
               onBlur={onBlur}
               onChangeText={onChange}
-              keyboardType="email-address"
+              keyboardType="default"
               autoCapitalize="none"
             />
-            <FormMessage error={errors.email?.message} />
+            <FormMessage error={errors.name?.message} />
           </View>
         )}
-        name="email"
+        name="name"
       />
 
       <Controller
