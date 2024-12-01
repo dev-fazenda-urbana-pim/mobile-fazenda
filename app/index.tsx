@@ -1,27 +1,19 @@
 import { Colors } from '@/constants/Colors';
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Controller, useForm } from 'react-hook-form';
-import { Image, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Controller } from 'react-hook-form';
+import { Image, StyleSheet, Text, TextInput, View } from 'react-native';
 
+import { ButtonLoading } from '@/components/ButtonLoading';
 import { FormMessage } from '@/components/FormMessage';
 import { ThemedText } from '@/components/ThemedText';
-import { FormDataLogin, schemaLogin } from '@/validations/schemaLogin';
+import useSignin from '@/hooks/useSignin';
 import { Link } from 'expo-router';
 import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const urbaninoLogo = require('@/assets/images/urbanino-logo.png');
 
-export default function HomeScreen() {
-  const { control, handleSubmit, formState: { errors } } = useForm<FormDataLogin>({
-    defaultValues: {
-      email: '',
-      password: '',
-    },
-    resolver: zodResolver(schemaLogin),
-  });
-
-  const onSubmit = handleSubmit(data => console.log(data));
+export default function SigninScreen() {
+  const { form, onSubmit, isPending } = useSignin()
 
   return (
     <SafeAreaView style={styles.container}>
@@ -39,7 +31,7 @@ export default function HomeScreen() {
       </Text>
 
       <Controller
-        control={control}
+        control={form.control}
         render={({ field: { onChange, onBlur, value } }) => (
           <View>
             <TextInput
@@ -52,14 +44,14 @@ export default function HomeScreen() {
               keyboardType="email-address"
               autoCapitalize="none"
             />
-            <FormMessage error={errors.email?.message} />
+            <FormMessage error={form.formState.errors.email?.message} />
           </View>
         )}
         name="email"
       />
 
       <Controller
-        control={control}
+        control={form.control}
         render={({ field: { onChange, onBlur, value } }) => (
           <View>
             <TextInput
@@ -71,15 +63,15 @@ export default function HomeScreen() {
               onChangeText={onChange}
               secureTextEntry
             />
-            <FormMessage error={errors.password?.message} />
+            <FormMessage error={form.formState.errors.password?.message} />
           </View>
         )}
         name="password"
       />
 
-      <Pressable style={styles.button} onPress={handleSubmit(onSubmit)}>
-        <Text style={styles.buttonText}>Entrar</Text>
-      </Pressable>
+      <ButtonLoading isLoading={isPending} onPress={form.handleSubmit(onSubmit)}>
+        Entrar
+      </ButtonLoading>
 
       <Text style={{ color: Colors.blue['indigo-dye'], marginTop: 24 }}>
         Em caso de perda de acesso, entre em contato com
@@ -111,10 +103,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: 'center',
     marginTop: 10,
-  },
-  buttonText: {
-    color: '#fff',
-    fontWeight: 'bold',
   },
   titleContainer: {
     padding: 20,

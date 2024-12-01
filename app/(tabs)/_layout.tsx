@@ -1,12 +1,19 @@
-import { Tabs } from 'expo-router';
+import { Redirect, Tabs } from 'expo-router';
 import React from 'react';
 
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
+import useAuth from '../../hooks/useAuth';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+
+  const { signedIn } = useAuth()
+
+  if (!signedIn) {
+    return <Redirect href="/" />
+  }
 
   return (
     <Tabs
@@ -14,21 +21,6 @@ export default function TabLayout() {
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
         headerShown: false,
       }}>
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Home',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="register"
-        options={{
-          href: null,
-        }}
-      />
       <Tabs.Screen
         name="production"
         options={{

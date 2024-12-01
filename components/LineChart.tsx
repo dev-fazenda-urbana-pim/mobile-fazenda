@@ -30,13 +30,6 @@ export default function LineChart(props: LineChartProps) {
     .x((d, i) => xScale(i))
     .curve(d3.curveCardinal.tension(0.3));
 
-  const areaFn = d3
-    .area<number>()
-    .x((d, i) => xScale(i))
-    .y0(height)
-    .y1((d) => yScale(d))
-    .curve(d3.curveCardinal.tension(0.3))
-
   const svgLine = lineFn(props.data) ?? "";
   const svgArea = lineFn(props.data) ?? "";
 
