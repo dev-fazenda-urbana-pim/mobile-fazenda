@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
-import { Image, Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
+import useAuth from '../hooks/useAuth';
 import ModalProfile from './ModalProfile';
-const userProfile = require('@/assets/images/user-profile.png');
 
 export default function Header() {
   const [modalVisible, setModalVisible] = useState(false);
+
+  const { user } = useAuth();
+
+  console.log(user);
 
   return (
     <View>
@@ -12,7 +16,9 @@ export default function Header() {
 
       <View style={styles.header}>
         <Pressable onPress={() => setModalVisible(true)}>
-          <Image source={userProfile} style={styles.profile} />
+          <Text style={styles.avatar}>
+            {user?.nome.slice(0, 2).toUpperCase() ?? "TE"}
+          </Text>
         </Pressable>
       </View>
     </View>
@@ -27,6 +33,14 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 20,
     backgroundColor: '#024059',
+  },
+  avatar: {
+    textAlign: 'center',
+    width: 40,
+    height: 40,
+    backgroundColor: '#fff',
+    borderRadius: 50,
+    padding: 8,
   },
   logo: {
     height: 50,

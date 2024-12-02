@@ -1,9 +1,9 @@
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useQuery } from '@tanstack/react-query'
 import { createContext, useCallback, useEffect, useState } from 'react'
 import { storage } from '../config/storage'
 import UserService from '../services/UserService'
 import { User } from '../types/User'
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export interface AuthContextProps {
   user: User | undefined

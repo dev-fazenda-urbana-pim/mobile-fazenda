@@ -2,6 +2,7 @@ import { Colors } from '@/constants/Colors';
 import { MaterialIcons } from '@expo/vector-icons';
 import React from 'react';
 import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
+import useAuth from '../hooks/useAuth';
 
 interface ModalProfileProps {
   modalVisible: boolean;
@@ -9,6 +10,13 @@ interface ModalProfileProps {
 }
 
 export default function ModalProfile({ modalVisible, setModalVisible }: ModalProfileProps) {
+  const { signout } = useAuth()
+
+  function signoutUser() {
+    setModalVisible(false)
+    signout()
+  }
+
   return (
     <Modal
       animationType="fade"
@@ -29,6 +37,7 @@ export default function ModalProfile({ modalVisible, setModalVisible }: ModalPro
 
           <Pressable
             style={[styles.button, styles.buttonActions, styles.buttonLogout]}
+            onPress={signoutUser}
           >
             <Text style={styles.textStyle}>Sair</Text>
             <MaterialIcons name="logout" size={24} color="white" />
