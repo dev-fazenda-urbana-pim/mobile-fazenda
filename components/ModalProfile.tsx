@@ -1,5 +1,6 @@
 import { Colors } from '@/constants/Colors';
 import { MaterialIcons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
 import useAuth from '../hooks/useAuth';
@@ -11,10 +12,12 @@ interface ModalProfileProps {
 
 export default function ModalProfile({ modalVisible, setModalVisible }: ModalProfileProps) {
   const { signout } = useAuth()
+  const router = useRouter()
 
   function signoutUser() {
     setModalVisible(false)
     signout()
+    router.push('/')
   }
 
   return (
